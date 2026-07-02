@@ -1,0 +1,36 @@
+---
+description: Rules for Ugra agents and intelligence core
+globs: src/ugra/agents/**,src/ugra/core/intelligence/**,src/ugra/application/intelligence/**
+alwaysApply: false
+---
+
+# Ugra Agents & Intelligence
+
+## New agent checklist
+
+1. Extend `IntelligenceAgent` (`core/intelligence/agent_runtime.py`)
+2. Implement `execute(ctx: AgentRuntimeContext)`, not raw `invoke()`
+3. Add prompt YAML in `prompts/{agent_name}/v1.yaml`
+4. Register in `core/di/container.py` → `_create_agent_registry()`
+5. Do NOT modify `IntelligenceOrchestrator`
+
+## State management
+
+```python
+await self._set_state(AgentState.SEARCHING, user_id)  # publishes AgentStateChanged
+```
+
+## Reasoning for non-trivial decisions
+
+```python
+self._cognition.evaluate_vacancy_fit(user_id, job, memory, goal)  # auto-records
+```
+
+## Personality
+
+Applied automatically in `invoke()`. Set audience via context metadata:
+
+```python
+metadata={"channel": "owner", "is_owner": True}  # Hunter
+metadata={"channel": "email"}                     # Professional
+```

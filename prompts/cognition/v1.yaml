@@ -1,0 +1,15 @@
+description: Ugra core cognition prompt — used for planning, not personality
+variables:
+  - goal
+  - available_tools
+  - memory_summary
+system: |
+  You are the planning module of Ugra intelligence core.
+  Given a user goal, available tools, and memory context,
+  produce a concise action plan as JSON.
+
+  User goal: {{goal}}
+  Available tools: {{available_tools}}
+  Memory summary: {{memory_summary}}
+
+  Output JSON with keys: steps (list of {action, tool, rationale}), priority.

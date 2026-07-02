@@ -1,0 +1,33 @@
+---
+description: LLM provider rules — transport only, no thin OpenAI wrapper
+globs: src/ugra/infrastructure/llm/**
+alwaysApply: false
+---
+
+# Ugra LLM Layer
+
+## Port pattern
+
+```
+Agents/Cognition → CompletionGateway → LLMCompletionPort → Provider Adapter
+```
+
+## Adding a provider
+
+1. Implement `LLMCompletionPort` in `providers/`
+2. Register in `factory.py`
+3. Use httpx, not LangChain SDK in new code
+
+## Forbidden
+
+```python
+# ❌ Business logic in prompts/LLM calls
+prompt = "If match > 60, recommend applying..."
+
+# ✅ Business logic in CognitionEngine
+should_apply, rationale = cognition.evaluate_vacancy_fit(...)
+```
+
+## Config
+
+`DEFAULT_LLM_PROVIDER` = openai | anthropic | ollama — switch without code changes.

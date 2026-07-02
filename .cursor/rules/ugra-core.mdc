@@ -1,0 +1,28 @@
+---
+description: Core rules for Ugra platform — always apply
+alwaysApply: true
+---
+
+# Ugra Core Rules
+
+Read `AGENTS.md` and `docs/` before making changes.
+
+## Intelligence belongs to Ugra, not LLM
+
+- Planning, memory, personality, goals → `application/intelligence/`
+- LLM is transport only → `infrastructure/llm/` via `CompletionGateway`
+- Never put personality in system prompts — use `PersonalityEngine`
+
+## Architecture
+
+- Clean Architecture: domain → application → infrastructure → presentation
+- New agents extend `IntelligenceAgent`, register in DI only
+- Prompts in `prompts/{agent}/v{N}.yaml`, not in Python
+- Decisions → `CognitionEngine` reasoning records
+- Cross-agent communication → `EventBus`, not direct calls
+
+## Code style
+
+- Minimal diff, match existing conventions
+- Unit tests for new business logic in `tests/unit/`
+- No commits unless user asks

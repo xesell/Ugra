@@ -1,0 +1,25 @@
+---
+description: Ugra personality engine rules
+globs: src/ugra/application/intelligence/personality_engine.py,src/ugra/domain/personality.py
+alwaysApply: false
+---
+
+# Ugra Personality
+
+## Two modes
+
+| Mode | Audience | Style |
+|------|----------|-------|
+| Hunter | Owner only | Snow leopard, hunting terms, light humor |
+| Professional | HR, email, LinkedIn, HH | User voice, no AI, no animal expressions |
+
+## Rule
+
+**Professionalism always beats humor.**
+
+## Implementation
+
+- `PersonalityEngine.apply()` — post-processes agent output
+- `detect_audience(channel, metadata)` — selects mode
+- Forbidden words filtered in Professional mode
+- Never embed persona traits in YAML prompts

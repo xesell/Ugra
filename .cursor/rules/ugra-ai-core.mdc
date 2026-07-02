@@ -1,0 +1,31 @@
+---
+description: AI Core rules — agent runtime, memory, autonomy
+globs: src/ugra/agents/**,src/ugra/application/autonomous/**,src/ugra/application/events/**
+alwaysApply: false
+---
+
+# AI Core
+
+Read `docs/ai-core.md` before changes.
+
+## Module map
+
+- `agents/runtime/` — AgentMemory, AgentTools, UnifiedAgentContext, ContextBuilder
+- `application/intelligence/personality_service.py` — PersonalityService (not in prompts)
+- `application/intelligence/ugra_mood.py` — UI labels (🐆 На охоте...)
+- `application/autonomous/first_task.py` — startup autonomy
+- `application/events/handlers.py` — event subscriptions
+
+## Interfaces
+
+- `IAgentTool` = `AgentTool` in `core/tools/base.py`
+- `ILLMProvider` = `LLMCompletionPort` in `infrastructure/llm/ports.py`
+- `AgentOrchestrator` = `IntelligenceOrchestrator`
+
+## Prompts
+
+Use `prompts/{agent}.md` — never hardcode in Python.
+
+## Memory
+
+Persist via `AgentMemory.record_*()` — not raw repository in agents.
