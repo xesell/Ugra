@@ -1,6 +1,6 @@
 ---
 description: Rules for Ugra agents and intelligence core
-globs: src/ugra/agents/**,src/ugra/core/intelligence/**,src/ugra/application/intelligence/**
+globs: backend/src/ugra/agents/**,backend/src/ugra/core/intelligence/**,backend/src/ugra/application/intelligence/**
 alwaysApply: false
 ---
 

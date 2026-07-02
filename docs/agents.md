@@ -16,7 +16,7 @@ BaseAgent (agents/base/registry.py)
 
 ### 1. Промпт
 
-`prompts/my_agent/v1.yaml`:
+`backend/prompts/my_agent/v1.yaml`:
 
 ```yaml
 description: My agent system prompt
@@ -31,7 +31,7 @@ system: |
 
 ### 2. Класс агента
 
-`src/ugra/agents/my_agent/agent.py`:
+`backend/src/ugra/agents/my_agent/agent.py`:
 
 ```python
 from ugra.agents.base.registry import AgentCapability, AgentResponse
@@ -86,7 +86,7 @@ my_agent = providers.Singleton(
 
 ### 4. Тест
 
-`tests/unit/test_my_agent.py` — can_handle, execute с mock LLM.
+`backend/tests/unit/test_my_agent.py` — can_handle, execute с mock LLM.
 
 ## AgentContext metadata
 

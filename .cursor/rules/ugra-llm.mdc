@@ -1,6 +1,6 @@
 ---
 description: LLM provider rules — transport only, no thin OpenAI wrapper
-globs: src/ugra/infrastructure/llm/**
+globs: backend/src/ugra/infrastructure/llm/**
 alwaysApply: false
 ---
 

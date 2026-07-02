@@ -51,7 +51,7 @@ LLM используется **только** для генерации текс
 
 ## Слои
 
-### Domain (`src/ugra/domain/`)
+### Domain (`backend/src/ugra/domain/`)
 
 Чистая бизнес-логика без внешних зависимостей.
 
@@ -64,7 +64,7 @@ LLM используется **только** для генерации текс
 - `events/` — доменные события
 - `repositories/` — ABC-порты (интерфейсы)
 
-### Application (`src/ugra/application/`)
+### Application (`backend/src/ugra/application/`)
 
 Оркестрация use cases и intelligence-модулей.
 
@@ -72,7 +72,7 @@ LLM используется **только** для генерации текс
 - `intelligence/` — CognitionEngine, GoalManager, PersonalityEngine
 - `autonomous/` — AutonomousScheduler
 
-### Core (`src/ugra/core/`)
+### Core (`backend/src/ugra/core/`)
 
 Инфраструктура платформы.
 
@@ -82,18 +82,18 @@ LLM используется **только** для генерации текс
 - `intelligence/agent_runtime.py` — IntelligenceAgent base class
 - `logging/`, `observability/` — structlog, OTEL, Prometheus
 
-### Infrastructure (`src/ugra/infrastructure/`)
+### Infrastructure (`backend/src/ugra/infrastructure/`)
 
 Внешние системы.
 
 - `llm/` — порты и адаптеры провайдеров (httpx, не LangChain в ядре)
-- `prompts/` — PromptManager
+- `backend/prompts/` — PromptManager
 - `persistence/` — SQLAlchemy, репозитории
 - `adapters/job_sources/` — HH, Habr, GeekJob
 - `rag/` — pgvector knowledge base
 - `mcp/` — MCP registry
 
-### Agents (`src/ugra/agents/`)
+### Agents (`backend/src/ugra/agents/`)
 
 Тонкие модули — делегируют intelligence core.
 
@@ -101,7 +101,7 @@ LLM используется **только** для генерации текс
 - `orchestrator/` — IntelligenceOrchestrator
 - `career/`, `resume/`, `cover_letter/`, `interview/`, `learning/`
 
-### Presentation (`src/ugra/presentation/`)
+### Presentation (`backend/src/ugra/presentation/`)
 
 - `api/routes.py` — REST API
 - `telegram/bot.py` — Telegram UI
@@ -156,11 +156,11 @@ container.career_agent()
 ## Тестирование
 
 ```
-tests/unit/
+backend/tests/unit/
 ├── test_domain.py
 ├── test_orchestrator.py
 ├── test_intelligence_core.py
 └── test_learning_agent.py
 ```
 
-Запуск: `pytest tests/unit -q`
+Запуск: `pytest backend/tests/unit -q`

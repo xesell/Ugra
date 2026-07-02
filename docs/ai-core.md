@@ -6,18 +6,18 @@
 
 | Требование | Статус | Реализация |
 |------------|--------|------------|
-| Agent Runtime | ✅ | `src/ugra/agents/runtime/` |
+| Agent Runtime | ✅ | `backend/src/ugra/agents/runtime/` |
 | PersonalityService | ✅ | `application/intelligence/personality_service.py` |
 | Agent Memory (PostgreSQL) | ✅ | `agents/runtime/memory.py` + `PostgresMemoryRepository` |
 | IAgentTool + 5 tools | ✅ | `core/tools/base.py` (6 tools) |
 | ILLMProvider + 3 providers | ✅ | `infrastructure/llm/ports.py` |
-| Prompts as .md | ✅ | `prompts/*.md` |
+| Prompts as .md | ✅ | `backend/prompts/*.md` |
 | Unified AgentContext | ✅ | `agents/runtime/context.py` |
 | First autonomous task | ✅ | `application/autonomous/first_task.py` |
 | Event subscriptions | ✅ | `application/events/handlers.py` |
 | Ugra mood UI labels | ✅ | `application/intelligence/ugra_mood.py` |
 
-## Agent Runtime (`src/ugra/agents/runtime/`)
+## Agent Runtime (`backend/src/ugra/agents/runtime/`)
 
 ```python
 from ugra.agents.runtime import (
@@ -80,7 +80,7 @@ Fallback на in-memory если `USE_POSTGRES_MEMORY=false`.
 
 ## Prompts
 
-Файлы в `prompts/`:
+Файлы в `backend/prompts/`:
 
 - `career_agent.md`
 - `resume_agent.md`

@@ -27,7 +27,7 @@ MVP: **Career Agent** (поиск работы, резюме, интервью, 
 1. **Не делать тонкий слой над OpenAI API.** Вся логика — в `CognitionEngine`, `GoalManager`, `PersonalityEngine`, а не в промптах.
 2. **Не класть личность в system prompt.** Hunter/Professional — только через `PersonalityEngine`.
 3. **Не менять orchestrator/registry** при добавлении нового агента — только регистрация в DI.
-4. **Не хардкодить промпты** в `.py` — только `prompts/{agent}/v{N}.yaml` + `PromptManager`.
+4. **Не хардкодить промпты** в `.py` — только `backend/prompts/{agent}/v{N}.yaml` + `PromptManager`.
 5. **Не импортировать LangChain** в domain/application слоях.
 6. **Не ломать Clean Architecture:** domain не зависит от infrastructure.
 7. **Не коммитить** `.env`, API-ключи, токены.
@@ -41,19 +41,22 @@ MVP: **Career Agent** (поиск работы, резюме, интервью, 
 4. **События** публикуй через `EventBus`, не прямые вызовы между агентами.
 5. **Состояние агента** меняй через `_set_state()` — UI читает `AgentState`.
 6. **DI** — все зависимости через `Container` в `core/di/container.py`.
-7. **Тесты** — добавляй unit-тесты для новой бизнес-логики в `tests/unit/`.
+7. **Тесты** — добавляй unit-тесты для новой бизнес-логики в `backend/tests/unit/`.
 8. **Минимальный diff** — не рефактори несвязанный код.
 
 ## Слои и куда класть код
 
 ```
-src/ugra/
+backend/src/ugra/
 ├── domain/          # Сущности, value objects, порты репозиториев, события
 ├── application/     # Use cases, intelligence (cognition, goals, personality)
 ├── core/            # DI, events, tools, agent runtime
-├── infrastructure/  # DB, LLM adapters, prompts, RAG, внешние API
+├── infrastructure/  # DB, LLM adapters, RAG, внешние API
 ├── agents/          # Конкретные агенты (тонкий слой над runtime)
 └── presentation/    # FastAPI, Telegram
+
+backend/prompts/     # Промпты агентов (вне Python-кода)
+frontend/src/        # React UI
 ```
 
 | Что добавляешь | Куда |
@@ -62,10 +65,9 @@ src/ugra/
 | Новое доменное событие | `domain/events/__init__.py` |
 | Бизнес-правило выбора вакансии | `application/intelligence/cognition_engine.py` |
 | Новый LLM-провайдер | `infrastructure/llm/providers/` + `factory.py` |
-| [docs/memory-and-goals.md](docs/memory-and-goals.md) | Память и цели |
-
-| Промпт агента | `prompts/{agent_name}.md` (предпочтительно) или `prompts/{agent}/v{N}.yaml` |
+| Промпт агента | `backend/prompts/{agent_name}.md` или `backend/prompts/{agent}/v{N}.yaml` |
 | Правило стиля речи | `application/intelligence/personality_engine.py` |
+| [docs/memory-and-goals.md](docs/memory-and-goals.md) | Память и цели |
 
 ## Personality — краткая памятка
 
@@ -84,14 +86,14 @@ src/ugra/
 - [ ] Reasoning записан для нетривиальных решений
 - [ ] События опубликованы где уместно
 - [ ] Агент зарегистрирован в DI, orchestrator не тронут
-- [ ] `pytest tests/unit` проходит
+- [ ] `pytest backend/tests/unit` проходит
 - [ ] Документация в `docs/` обновлена при изменении архитектуры
 
 ## Команды разработки
 
 ```bash
 # Тесты
-pytest tests/unit -q
+pytest backend/tests/unit -q
 
 # API
 uvicorn ugra.main:app --reload

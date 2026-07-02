@@ -25,13 +25,13 @@
 
 | Компонент | Путь |
 |-----------|------|
-| Agent Runtime | `src/ugra/core/intelligence/agent_runtime.py` |
-| Orchestrator | `src/ugra/agents/orchestrator/intelligence_orchestrator.py` |
-| Cognition Engine | `src/ugra/application/intelligence/cognition_engine.py` |
-| Personality Engine | `src/ugra/application/intelligence/personality_engine.py` |
-| DI Container | `src/ugra/core/di/container.py` |
-| Промпты | `prompts/` |
-| Тесты | `tests/unit/` |
+| Agent Runtime | `backend/src/ugra/core/intelligence/agent_runtime.py` |
+| Orchestrator | `backend/src/ugra/agents/orchestrator/intelligence_orchestrator.py` |
+| Cognition Engine | `backend/src/ugra/application/intelligence/cognition_engine.py` |
+| Personality Engine | `backend/src/ugra/application/intelligence/personality_engine.py` |
+| DI Container | `backend/src/ugra/core/di/container.py` |
+| Промпты | `backend/prompts/` |
+| Тесты | `backend/tests/unit/` |
 
 ## Эпики
 

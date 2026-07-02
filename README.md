@@ -7,27 +7,29 @@ Ugra is an intelligent platform of personal AI agents that automate professional
 - **[AGENTS.md](AGENTS.md)** — rules for AI agents working on this repo
 - **[docs/](docs/README.md)** — architecture, intelligence core, agents, API
 
-## Architecture
+## Repository layout
+
+Monorepo with a symmetric `backend/src` + `frontend/src` structure:
 
 ```
-                   Ugra
-             Agent Orchestrator
-                     │
-        ┌────────────┼────────────┐
-        │            │            │
-   Career Agent  Resume Agent  Interview Agent
-        │            │            │
-   Cover Letter   Learning     (future agents)
+ugra/
+├── backend/                 # Python API, agents, Telegram bot
+│   ├── src/ugra/            # Application source (Clean Architecture)
+│   ├── tests/               # Backend unit tests
+│   ├── prompts/             # Agent prompts (.md / .yaml)
+│   └── Dockerfile
+├── frontend/                # React web UI (Vite + TypeScript)
+│   ├── src/
+│   └── Dockerfile
+├── deploy/                  # Deployment & observability configs
+│   └── observability/       # Prometheus, OpenTelemetry
+├── docs/                    # Technical documentation
+├── scripts/                 # Dev & asset tooling
+├── assets/                  # Shared static assets (character sheet)
+├── docker-compose.yml       # Full stack (API, bot, web, Postgres, observability)
+├── pyproject.toml             # Python package & tooling
+└── AGENTS.md
 ```
-
-### Design Principles
-
-- **Clean Architecture** — domain, application, infrastructure, presentation layers
-- **Plugin-based agents** — new agents register without modifying existing code
-- **LangGraph** — each agent has its own graph, memory, tools, and prompts
-- **MCP** — plug-and-play MCP server registry
-- **RAG** — pgvector knowledge base for docs, resumes, vacancies, interview history
-- **Event-Driven** — domain events for job analysis, applications, skill gaps
 
 ## Stack
 
@@ -37,105 +39,48 @@ Ugra is an intelligent platform of personal AI agents that automate professional
 | AI | LangGraph, OpenAI, Anthropic, Ollama |
 | RAG | pgvector, PostgreSQL, Sentence Transformers |
 | Bot | aiogram 3 |
-| Infra | Docker, Docker Compose, Kubernetes |
+| Web UI | React 19, Vite, Tailwind CSS |
+| Infra | Docker, Docker Compose |
 | Observability | OpenTelemetry, Prometheus, Grafana |
 
 ## Quick Start
 
 ```bash
-# Clone and setup
-cd Projects/ugra
 cp .env.example .env
 # Edit .env with your API keys
 
-# Docker (recommended)
+# Full stack
 docker compose up -d
 
-# Local development
+# Local backend
 python -m venv .venv
-.venv\Scripts\activate        # Windows
+.venv\Scripts\activate          # Windows
 pip install -e ".[dev]"
-
-# Run API
 uvicorn ugra.main:app --reload
 
-# Run Telegram bot
+# Telegram bot
 python -m ugra.presentation.telegram.bot
+
+# Web UI (Node.js 20+)
+cd frontend && npm install && npm run dev
+# → http://localhost:5173
 ```
 
-## Telegram Commands
-
-| Command | Description |
-|---------|-------------|
-| `/jobs` | Search vacancies (HH.ru, HH.kz, Habr Career, GeekJob) |
-| `/top` | Top matches by Match Score |
-| `/resume` | Manage resume versions |
-| `/interview` | Interview preparation |
-| `/settings` | User preferences |
-| `/stats` | Search statistics |
-
-## API Endpoints
+## API
 
 ```
 GET  /api/v1/health
-GET  /api/v1/agents
-GET  /api/v1/agents/state
-POST /api/v1/jobs/search
-POST /api/v1/message
-POST /api/v1/goals
-GET  /api/v1/goals/{user_id}
-GET  /api/v1/reasoning/{user_id}
-GET  /api/v1/memory/{user_id}
-POST /api/v1/jobs/{id}/cover-letter
-POST /api/v1/jobs/{id}/interview-prep
+GET  /api/v1/ui/dashboard
+POST /api/v1/ui/resumes/upload
+GET  /api/v1/ui/candidate-profile
 ```
 
-Full API docs: **[docs/api.md](docs/api.md)**
-
-## Adding a New Agent
-
-See **[docs/agents.md](docs/agents.md)** for the full guide. Summary:
-
-1. Create `src/ugra/agents/my_agent/agent.py` extending `IntelligenceAgent`
-2. Add prompt in `prompts/my_agent/v1.yaml`
-3. Register in `Container._create_agent_registry()` in `core/di/container.py`
-4. No changes to orchestrator or existing agents required
-
-## Adding an MCP Server
-
-Configure in `.env`:
-
-```json
-MCP_SERVERS=[
-  {"name": "filesystem", "command": "npx", "args": ["-y", "@modelcontextprotocol/server-filesystem", "/data"]},
-  {"name": "github", "command": "npx", "args": ["-y", "@modelcontextprotocol/server-github"]}
-]
-```
-
-## Project Structure
-
-```
-src/ugra/
-├── agents/           # LangGraph agents (plugin modules)
-│   ├── base/         # BaseAgent, AgentRegistry
-│   ├── orchestrator/ # Routing logic
-│   ├── career/       # MVP Career Agent
-│   ├── resume/
-│   ├── cover_letter/
-│   ├── interview/
-│   └── learning/
-├── application/      # Use cases
-├── domain/           # Entities, value objects, repository ports
-├── infrastructure/   # DB, LLM, RAG, MCP, job source adapters
-├── presentation/     # FastAPI routes, Telegram bot
-├── core/             # DI, events, logging, observability
-└── config/           # Settings
-```
+Full API docs: **[docs/api.md](docs/api.md)** · Swagger: `http://localhost:8000/docs`
 
 ## Tests
 
 ```bash
-pytest tests/ -v
+pytest backend/tests -q
 ```
 
 ## License

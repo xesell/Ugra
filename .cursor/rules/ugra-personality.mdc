@@ -1,6 +1,6 @@
 ---
 description: Ugra personality engine rules
-globs: src/ugra/application/intelligence/personality_engine.py,src/ugra/domain/personality.py
+globs: backend/src/ugra/application/intelligence/personality_engine.py,backend/src/ugra/domain/personality.py
 alwaysApply: false
 ---
 

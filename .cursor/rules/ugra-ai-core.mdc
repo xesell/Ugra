@@ -1,6 +1,6 @@
 ---
 description: AI Core rules — agent runtime, memory, autonomy
-globs: src/ugra/agents/**,src/ugra/application/autonomous/**,src/ugra/application/events/**
+globs: backend/src/ugra/agents/**,backend/src/ugra/application/autonomous/**,backend/src/ugra/application/events/**
 alwaysApply: false
 ---
 
